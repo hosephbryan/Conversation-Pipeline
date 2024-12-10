@@ -105,7 +105,12 @@ async def main():
     chat_chain = await initialize_conversation_chain(model, retriever)
 
     while True:
-        user_input, stt_input = await listen_for_commands()
+        user_input = None
+        stt_input = None   
+
+        while user_input is None:                                                                                                             
+            user_input, stt_input = await listen_for_commands()
+
         if stt_input.lower() == "exit" or stt_input.lower() == "goodbye":
             print("AI Therapist: Take care! Feel free to reach out anytime.")
             break
@@ -117,11 +122,11 @@ async def main():
         
         ai_response = response_chain["answer"]
 
-        await output_with_piper(ai_response, current_wavfile)
+        await output_with_piper(ai_response, output_wavfile_1, output_wavfile_2, current_wavfile)
         current_wavfile = output_wavfile_2 if current_wavfile == output_wavfile_1 else output_wavfile_1
-        print(f"AI Therapist: {ai_response["answer"]}")
+        print(f"AI Therapist: {ai_response}")
 
 
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    asyncio.run(main())                                                                   
